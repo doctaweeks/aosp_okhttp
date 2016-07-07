@@ -717,7 +717,7 @@ public final class FramedConnection implements Closeable {
         if (clearPrevious) peerSettings.clear();
         peerSettings.merge(newSettings);
         if (getProtocol() == Protocol.HTTP_2) {
-          ackSettingsLater(newSettings);
+          applyAndAckSettings(newSettings);
         }
         int peerInitialWindowSize = peerSettings.getInitialWindowSize(DEFAULT_INITIAL_WINDOW_SIZE);
         if (peerInitialWindowSize != -1 && peerInitialWindowSize != priorWriteWindowSize) {
@@ -745,11 +745,11 @@ public final class FramedConnection implements Closeable {
       }
     }
 
-    private void ackSettingsLater(final Settings peerSettings) {
+    private void applyAndAckSettings(final Settings peerSettings) {
       executor.execute(new NamedRunnable("OkHttp %s ACK Settings", hostName) {
         @Override public void execute() {
           try {
-            frameWriter.ackSettings(peerSettings);
+            frameWriter.applyAndAckSettings(peerSettings);
           } catch (IOException ignored) {
           }
         }
