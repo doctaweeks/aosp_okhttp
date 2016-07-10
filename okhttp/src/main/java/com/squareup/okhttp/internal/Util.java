@@ -295,6 +295,13 @@ public final class Util {
     return Arrays.asList(array).contains(value);
   }
 
+  public static <T> int indexOf(T[] array, T value) {
+    for (int i = 0, size = array.length; i < size; i++) {
+      if (equal(array[i], value)) return i;
+    }
+    return -1;
+  }
+
   public static String[] concat(String[] array, String value) {
     String[] result = new String[array.length + 1];
     System.arraycopy(array, 0, result, 0, array.length);
