@@ -290,6 +290,11 @@ public class ByteString implements Serializable, Comparable<ByteString> {
     return data.clone();
   }
 
+  /** Returns the bytes of this string without a defensive copy. Do not mutate! */
+  byte[] internalArray() {
+    return data;
+  }
+
   /** Writes the contents of this byte string to {@code out}. */
   public void write(OutputStream out) throws IOException {
     if (out == null) throw new IllegalArgumentException("out == null");
